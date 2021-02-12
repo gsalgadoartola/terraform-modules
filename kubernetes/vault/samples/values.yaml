@@ -1,0 +1,31 @@
+server:
+  image:
+    repository: "vault"
+    tag: "1.4.0"
+  resources:
+    requests:
+      memory: 256Mi
+      cpu: 50m
+    limits:
+      memory: 256Mi
+      cpu: 50m
+  dataStorage:
+    enabled: true
+    size: 1Gi
+  auditStorage:
+    enabled: true
+    size: 1Gi
+  ha:
+    enabled: true
+    replicas: 1
+    raft:
+      enabled: true
+  extraVolumes:
+    - type: secret
+      name: tls
+  extraEnvironmentVars:
+    VAULT_ADDR: https://127.0.0.1:8200
+    VAULT_SKIP_VERIFY: true
+ui:
+  enabled: true
+  serviceType: "ClusterIP"

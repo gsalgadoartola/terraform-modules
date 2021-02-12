@@ -1,0 +1,29 @@
+ui = ${enable_vault_ui}
+        
+listener "tcp" {
+  tls_disable     = ${tls_disable}
+  tls_cert_file   = "/vault/userconfig/tls/tls_crt"
+  tls_key_file    = "/vault/userconfig/tls/tls_key"
+  address         = "[::]:8200"
+  cluster_address = "[::]:8201"
+}
+
+storage "raft" {
+  path = "/vault/data"
+}
+
+seal "awskms" {
+  region      = "${aws_kms_region}"
+  access_key  = "${aws_kms_access_key}"
+  secret_key  = "${aws_kms_secret_key}"
+  kms_key_id  = "${aws_kms_key_id}"
+}
+
+# seal "gcpckms" {
+#   project     = "${gcp_kms_project_id}"
+#   region      = "${gcp_kms_region}"
+#   key_ring    = "${gcp_kms_key_ring}"
+#   crypto_key  = "${gcp_kms_crypto_key}"
+# }
+
+service_registration "kubernetes" {}
