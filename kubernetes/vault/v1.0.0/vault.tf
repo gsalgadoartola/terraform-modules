@@ -29,7 +29,7 @@ resource "aws_iam_policy" "aws_iam_policy_vault_kms_unseal" {
   name        = "vault-kms-unseal"
   path        = "/"
   description = "Vault unseal key"
-  policy      = "${data.aws_iam_policy_document.aws_iam_policy_document_vault_kms_unseal.json}"
+  policy      = data.aws_iam_policy_document.aws_iam_policy_document_vault_kms_unseal.json
 }
 
 resource "aws_iam_user_policy_attachment" "aws_iam_user_policy_attachment_vault_kms_unseal" {
@@ -70,7 +70,7 @@ resource "helm_release" "vault_primary" {
     value = templatefile("templates/config.tmpl", {
       enable_vault_ui     = var.enable_vault_ui,
       tls_disable         = var.vault_tls_disable,
-      aws_kms_region      = var.aws_region,
+      aws_kms_region      = var.region,
       aws_kms_access_key  = aws_iam_access_key.aws_iam_access_key_vault_kms_unseal.id,
       aws_kms_secret_key  = aws_iam_access_key.aws_iam_access_key_vault_kms_unseal.secret,
       aws_kms_key_id      = aws_kms_key.aws_kms_key_vault_kms_unseal.id
@@ -95,7 +95,7 @@ resource "helm_release" "vault_secondary" {
     value = templatefile("templates/config.tmpl", {
       enable_vault_ui     = var.enable_vault_ui,
       tls_disable         = var.vault_tls_disable,
-      aws_kms_region      = var.aws_region,
+      aws_kms_region      = var.region,
       aws_kms_access_key  = aws_iam_access_key.aws_iam_access_key_vault_kms_unseal.id,
       aws_kms_secret_key  = aws_iam_access_key.aws_iam_access_key_vault_kms_unseal.secret,
       aws_kms_key_id      = aws_kms_key.aws_kms_key_vault_kms_unseal.id
