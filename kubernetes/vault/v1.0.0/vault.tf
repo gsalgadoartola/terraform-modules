@@ -71,9 +71,9 @@ resource "helm_release" "vault_primary" {
       enable_vault_ui     = var.enable_vault_ui,
       tls_disable         = var.vault_tls_disable,
       aws_kms_region      = var.aws_region,
-      aws_kms_key_id      = aws_kms_key.aws_kms_key_vault_kms_unseal.id,
       aws_kms_access_key  = aws_iam_access_key.aws_iam_access_key_vault_kms_unseal.id,
-      aws_kms_secret_key  = aws_iam_access_key.aws_iam_access_key_vault_kms_unseal.secret
+      aws_kms_secret_key  = aws_iam_access_key.aws_iam_access_key_vault_kms_unseal.secret,
+      aws_kms_key_id      = aws_kms_key.aws_kms_key_vault_kms_unseal.id
     })
   }
 }
@@ -95,10 +95,10 @@ resource "helm_release" "vault_secondary" {
     value = templatefile("templates/config.tmpl", {
       enable_vault_ui     = var.enable_vault_ui,
       tls_disable         = var.vault_tls_disable,
-      aws_kms_region      = var.aws_kms_region,
-      aws_kms_access_key  = var.aws_kms_access_key,
-      aws_kms_secret_key  = var.aws_kms_secret_key,
-      aws_kms_key_id      = var.aws_kms_key_id
+      aws_kms_region      = var.aws_region,
+      aws_kms_access_key  = aws_iam_access_key.aws_iam_access_key_vault_kms_unseal.id,
+      aws_kms_secret_key  = aws_iam_access_key.aws_iam_access_key_vault_kms_unseal.secret,
+      aws_kms_key_id      = aws_kms_key.aws_kms_key_vault_kms_unseal.id
     })
   }
 }
