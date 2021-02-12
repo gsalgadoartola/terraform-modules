@@ -33,12 +33,12 @@ resource "aws_iam_policy" "aws_iam_policy_vault_kms_unseal" {
 }
 
 resource "aws_iam_user_policy_attachment" "aws_iam_user_policy_attachment_vault_kms_unseal" {
-  user        = "${aws_iam_user.aws_iam_user_vault_kms_unseal.name}"
-  policy_arn  = "${aws_iam_policy.aws_iam_policy_vault_kms_unseal.arn}"
+  user        = aws_iam_user.aws_iam_user_vault_kms_unseal.name
+  policy_arn  = aws_iam_policy.aws_iam_policy_vault_kms_unseal.arn
 }
 
 resource "aws_iam_access_key" "aws_iam_access_key_vault_kms_unseal" {
-  user = "${aws_iam_user.aws_iam_user_vault_kms_unseal.name}"
+  user = aws_iam_user.aws_iam_user_vault_kms_unseal.name
 }
 
 resource "kubernetes_namespace" "vault_primary" {
@@ -67,7 +67,7 @@ resource "helm_release" "vault_primary" {
 
   set_sensitive {
     name  = "server.ha.raft.config"
-    value = templatefile("templates/config.tmpl", {
+    value = templatefile("${path.module}/templates/config.tmpl", {
       enable_vault_ui     = var.enable_vault_ui,
       tls_disable         = var.vault_tls_disable,
       aws_kms_region      = var.region,
