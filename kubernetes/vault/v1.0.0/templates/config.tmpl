@@ -19,11 +19,4 @@ seal "awskms" {
   kms_key_id  = "${aws_kms_key_id}"
 }
 
-# seal "gcpckms" {
-#   project     = "${gcp_kms_project_id}"
-#   region      = "${gcp_kms_region}"
-#   key_ring    = "${gcp_kms_key_ring}"
-#   crypto_key  = "${gcp_kms_crypto_key}"
-# }
-
 service_registration "kubernetes" {}

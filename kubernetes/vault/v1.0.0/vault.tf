@@ -92,7 +92,7 @@ resource "helm_release" "vault_secondary" {
 
   set_sensitive {
     name  = "server.ha.raft.config"
-    value = templatefile("templates/config.tmpl", {
+    value = templatefile("${path.module}/templates/config.tmpl", {
       enable_vault_ui     = var.enable_vault_ui,
       tls_disable         = var.vault_tls_disable,
       aws_kms_region      = var.region,
